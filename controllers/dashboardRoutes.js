@@ -8,11 +8,14 @@ router.get('/', auth, async (req, res) => {
     try {
         // Get all posts and JOIN with user data
         const postData = await Post.findAll({
+            where: {
+              user_id: req.session.user_id,  //this needs to match the user_id in the Post model
+            },
             include: [
-                {
-                    model: User,
-                    attributes: ['name'],
-                },
+              {
+                model: User, //this model needs to match the model in the User model
+                attributes: ['username'], //this attribute needs to match the attribute in the User model
+              },
             ],
         });
         // Serialize data so the template can read it
@@ -48,26 +51,29 @@ router.get('/edit/:id', auth, async (req, res) => {
     }
 });
 
-//get all posts from all users sorted by timestamp
-router.get('/all', auth, async (req, res) => {
+//delete route for your own posts
+router.delete('/api/posts/:id', auth, async (req, res) => {  //http://localhost:3001/api/posts/1
     try {
-        const postData = await Post.findAll({
-            include: [
-                {
-                    model: User,
-                    attributes: ['name'],
-                },
-            ],
+        const postData = await Post.destroy({
+            where: {
+                id: req.params.id,
+            },
         });
-        const posts = postData.map((post) => post.get({ plain: true }));
-        res.render('all-posts', {
-            posts,
+        if (!postData) {
+            res.status(404).json({ message: 'No post found with this id!' });
+            return;
+        }
+        res.render('dashboard', {
             loggedIn: req.session.loggedIn,
         });
+
     } catch (err) {
         res.status(500).json(err);
     }
 });
+
+
+
 
 
 

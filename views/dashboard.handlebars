@@ -1,0 +1,42 @@
+{{#if loggedIn}}
+  <h2>Welcome back, {{username}}! Your Dashboard:</h2>
+{{else}}
+  <h2>You need to log in to see your dashboard.</h2>
+{{/if}}
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="/"><Button>Home</Button></a></li>
+      <li><a href="/dashboard"><button>Dashboard</button></a></li>
+      <li><a href="/api/posts/newpost"><button>Post</button></a></li>
+      <li>
+        <form action="http://localhost:3001/api/users/logout" method="POST">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<section id="blogposts">
+  {{#each posts}}
+  <div class="postItem col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <h1>{{title}}</h1>
+        <h6 class="card-subtitle text-muted">Author: {{User.username}}</h6>
+        <p class="card-text">{{content}}</p>
+        <a href='/dashboard/edit/{{id}}'><button>Edit</button></a>
+        
+          <button class="delete-post" type="button" data-id="{{id}}">Delete</button>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+</section>
+    <footer>
+        <p>&copy; 2023 Tech Info To You</p>
+    </footer>
+<script src="/js/dashboard.js"></script>
