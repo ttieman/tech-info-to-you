@@ -1,20 +1,12 @@
 const router = require('express').Router();
-const { Comment } = require('../../models');
+const { User, Comment, Post } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-//create a new comment for a post
-router.post('/', withAuth, async (req, res) => {
-    try {
-        const newComment = await Comment.create({
-            content: req.body.content,
-            user_id: req.session.user_id,
-            post_id: req.body.post_id,
-        });
-        res.status(200).json(newComment);   
-    } catch (err) {
-        res.status(400).json(err);
-    }
-});
+
+
+
+
+
 
 //update a comment
 router.put('/:id', withAuth, async (req, res) => {
@@ -67,4 +59,52 @@ router.delete('/:id', withAuth, async (req, res) => {
 });
 
 
-module.exports = router;
+//get new comment page
+router.get('/:id', withAuth, async (req, res) => { 
+    try {
+        const post = await Post.findByPk(req.params.id, {
+            include : [
+                {
+                    model: Comment,
+                    attributes: ['id', 'content', 'post_id', 'user_id', 'created_at'],
+                    include: {
+                        model: User,
+                        attributes: ['username'],
+                    },
+                },
+            ],
+        });
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+       
+        const postdata = post.get({ plain: true });
+        
+        res.render('comment', {
+            post: postdata,
+            loggedIn: req.session.loggedIn,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
+});
+
+//post a new comment
+router.post('/:id', withAuth, async (req, res) => {
+    try {
+      const newComment = await Comment.create({
+        content: req.body.content,
+        user_id: req.session.user_id,
+        post_id: req.body.post_id,
+      });
+      //render the single post page
+        res.redirect(`/post/${req.body.post_id}`);
+    } catch (err) {
+        res.status(400).json(err);
+        }
+    });
+
+  
+    module.exports = router;

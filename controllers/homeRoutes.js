@@ -46,13 +46,19 @@ router.get('/', withAuth, async (req, res) => {
             },
             {
               model: Comment,
-              attributes: ['content','created_at'],
+              attributes: ['content', 'createdAt'],
+              include: [
+                {
+                  model: User,
+                  attributes: ['username'],
+                },
+              ],
             },
           ],
         });
-
+    
         const post = postData.get({ plain: true });
-
+    
         res.render('singlepost', {
           ...post,
           logged_in: req.session.logged_in,

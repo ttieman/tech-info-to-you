@@ -1,0 +1,10 @@
+<form action="/api/comment/{{post.id}}" method="POST">
+  <input type="hidden" name="post_id" value="{{post.id}}">
+  <div>
+    <label for="content">Add a comment:</label>
+    <textarea name="content" id="content" rows="4" cols="50"></textarea>
+  </div>
+  <div>
+    <button type="submit">Submit Comment</button>
+  </div>
+</form>
