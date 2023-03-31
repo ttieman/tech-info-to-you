@@ -31,13 +31,13 @@ router.get('/', auth, async (req, res) => {
 });
 
 // get edit post page
-router.get('/edit/:id', auth, async (req, res) => {
+router.get('/edit/:id', auth, async (req, res) => { 
     try {
         const postData = await Post.findByPk(req.params.id, {
             include: [
                 {
                     model: User,
-                    attributes: ['name'],
+                    attributes: ['username'],
                 },
             ],
         });
