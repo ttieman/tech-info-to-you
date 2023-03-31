@@ -1,0 +1,39 @@
+
+
+{{#if loggedIn}}
+  <h2>Welcome back, {{username}}!</h2>
+{{else}}
+  <h2>Welcome to Tech Info To You!</h2>
+{{/if}}
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="/"><Button>Home</Button></a></li>
+      <li><a href="/dashboard"><button>Dashboard</button></a></li>
+      <li><a href="/api/posts/newpost"><button>Post</button></a></li>
+      <li>
+        <form action="http://localhost:3001/api/users/logout" method="POST">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<section id="blogposts">
+  {{#each posts}} 
+  <div class="postItem col-md-12">
+    <a href='/post/{{id}}'>
+      <div class="card">
+        <div class="card-body">
+          <h1>{{title}}</h1>
+          <h6 class="card-subtitle text-muted">Author: {{User.username}}</h6>
+          <p class="card-text">{{content}}</p>
+		  <p class="timestamp">{{created_at}}</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  {{/each}}
+</section>

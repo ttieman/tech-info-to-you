@@ -1,0 +1,16 @@
+<h1>Sign Up</h1>
+
+<form id="signup-form" action="/api/users/register" method="POST">
+  <div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+{{#if errorMessage}}
+  <div class="alert alert-danger">{{errorMessage}}</div>
+{{/if}}
+  <button type="submit">Sign Up</button>
+</form>

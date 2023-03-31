@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
 const path = require('path');
+
 const helpers = require('./utils/auth');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 3001;
 const hbs = exphbs.create({ helpers });
 
 const sess = {
-    secret: process.env.SECRET,
+    secret: process.env.SESSION_SECRET,
     cookie: {
         // Session will expire in 30 minutes
         expires: 30 * 60 * 1000,
@@ -24,6 +25,7 @@ const sess = {
     saveUninitialized: true,
     store: new SequelizeStore({
         db: sequelize,
+        
     }),
 };
 

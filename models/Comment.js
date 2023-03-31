@@ -41,6 +41,12 @@ Comment.init(
                 key: 'id',
             },
         },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+            
+    },
     },
     {
         // TABLE CONFIGURATION OPTIONS GO HERE 

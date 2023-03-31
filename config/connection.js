@@ -1,15 +1,15 @@
 const Sequelize = require('sequelize');
 
-require('dotenv').config();
+require('dotenv').config(); // this reads the .env file and adds the variables to process.env
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, { // these are the variables from the .env file
+  host: process.env.DB_HOST, // this is the host from the .env file
   dialect: 'mysql',
-  port: process.env.DB_PORT,
+  port: process.env.DB_PORT, // this is the port from the .env file
   define: {
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true
+    timestamps: false, // this is to disable the default timestamp fields
+    freezeTableName: true, // this is to disable the plural table names
+    underscored: true // this is to use snake_case instead of camelCase
   }
 });
 

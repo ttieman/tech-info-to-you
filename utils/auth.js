@@ -1,9 +1,12 @@
 const loggedIn = (req, res, next) => {
     if (!req.session.loggedIn) {
+        console.log('you must log in first');
        res.redirect('/login');
-       return;
-    } 
-    next();
+      
+    } else{
+
+        next();
+    }
 }
 
 module.exports = loggedIn;
