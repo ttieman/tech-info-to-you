@@ -1,11 +1,11 @@
+const path = require('path');
 const express = require('express');
+const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
-const path = require('path');
 
 const helpers = require('./utils/auth');
-const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 require('dotenv').config();
@@ -13,6 +13,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+//sets up handlebars.js engine with custom helpers
 const hbs = exphbs.create({ helpers });
 
 const sess = {

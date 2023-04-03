@@ -1,11 +1,12 @@
+const { Post, User,Comment } = require('../models');
 const router = require('express').Router();
 const withAuth = require('../utils/auth');
-const { Post, User,Comment } = require('../models');
 
 router.get('/', withAuth, async (req, res) => {
   try {
     //get all posts and JOIN with user data
     const postData = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'createdAt'],
       where: {
         user_id: req.session.user_id
       },
@@ -16,7 +17,11 @@ router.get('/', withAuth, async (req, res) => {
         },
         {
           model: Comment,
-          attributes: ['content'],
+          attributes: ['id', 'content', 'post_id', 'user_id', 'createdAt'],
+          include: {
+            model: User,
+            attributes: ['username'],
+          },
         },
       ],
     });
@@ -28,7 +33,7 @@ router.get('/', withAuth, async (req, res) => {
 
         res.render('home', {
           posts,
-          logged_in: req.session.logged_in,
+          logged_in: req.session.loggedIn,
         });
       } catch (err) {
         res.status(500).json(err);
@@ -46,7 +51,7 @@ router.get('/', withAuth, async (req, res) => {
             },
             {
               model: Comment,
-              attributes: ['content', 'createdAt'],
+              attributes: ['id', 'content', 'post_id', 'user_id', 'createdAt'],
               include: [
                 {
                   model: User,
@@ -61,7 +66,7 @@ router.get('/', withAuth, async (req, res) => {
     
         res.render('singlepost', {
           ...post,
-          logged_in: req.session.logged_in,
+          logged_in: req.session.loggedIn,
         });
       } catch (err) {
         res.status(500).json(err);
@@ -83,11 +88,9 @@ router.get('/login', async (req, res) => {
 
 router.get('/signup', async (req, res) => {
     try {
-        if (req.session.loggedIn) {
-            res.redirect('/');
-            return;
-        }
-        res.render('register');
+       res.render('signup');
+   
+    
     } catch (err) {
         res.status(500).json(err);
     }

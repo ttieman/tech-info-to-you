@@ -1,0 +1,15 @@
+{{#if loggedIn}}
+  <h2>Edit your comment:</h2>
+  <form id="edit-comment-form">
+  {{!-- I need the comments title to be displayed not inputed --}}
+  
+    <div>
+      <label for="content">Content:</label>
+      <textarea id="content" name="content" rows="10" required>{{comment.content}}</textarea>
+    </div>
+    <button type="submit" id="user-id" value="{{User.id}}">Update</button>
+  </form>
+{{else}}
+  <h2>You need to log in to edit your post.</h2>
+{{/if}}
+  <script src="/js/edit-comment.js"></script>

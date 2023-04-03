@@ -1,5 +1,5 @@
 <section id="blogpost">
-  
+
   <div class="postItem col-md-12">
     <a href='/post/{{id}}'>
       <div class="card">
@@ -13,21 +13,29 @@
       </div>
     </a>
     <section id="comments">
-  <h2>Comments:</h2>
-    <ul>
-        {{#each Comments}}
-        <li>
-            <p>{{content}}</p>
-            <p>Author: {{User.username}}</p>
-            <p>Posted on: {{created_at}}</p>
-        </li>
-        {{/each}}
-    </ul>
+      <h2>Comments:</h2>
+      <ul>
+        <div class="comments-container" data-current-user-id="{{this.User.id}}">
+          {{#each Comments}}
+          <div class="comment" data-comment-id="{{this.id}}" data-user-id="{{this.User.id}}">
+            <li>
+              <p class="{{content}}">{{content}}</p>
+              <p>Author: {{this.User.username}}</p>
+              <p>Posted on: {{created_at}}</p>
+            </li>
+            <a href='/api/comment/edit/{{id}}'><button class="edit_comment hidden" data-id="{{this.id}}">Update</button></a>
+            <button type="submit" class="delete_comment hidden" id="delete-comment-button" data-id="{{this.id}}">Delete</button>
+           
+          </div>
+          {{/each}}
+        </div>
+      </ul>
 
-    {{#if logged_in}}
-    <!-- Add comment form or any other authenticated user functionality -->
-    {{/if}}
-</section>
+      {{#if logged_in}}
+      <!-- Add comment form or any other authenticated user functionality -->
+      {{/if}}
+    </section>
   </div>
-  
+
 </section>
+<script src="/js/comment.js"></script>

@@ -9,14 +9,26 @@ router.get('/', auth, async (req, res) => {
         // Get all posts and JOIN with user data
         const postData = await Post.findAll({
             where: {
-              user_id: req.session.user_id,  //this needs to match the user_id in the Post model
+                user_id: req.session.user_id,  //this needs to match the user_id in the Post model
             },
+            attributes: ['id', 'title', 'content', 'createdAt'],
+
             include: [
-              {
-                model: User, //this model needs to match the model in the User model
-                attributes: ['username'], //this attribute needs to match the attribute in the User model
-              },
+                {
+                    model: User, //this model needs to match the model in the User model
+                    attributes: ['username'], //this attribute needs to match the attribute in the User model
+                },
+                {  //we include this because we want to see the comments on the dashboard
+                    model: Comment,
+                    attributes: ['id', 'content', 'post_id', 'user_id', 'createdAt'],
+                    include: {
+                        model: User,
+                        attributes: ['username'],
+                    },
+                },
+
             ],
+
         });
         // Serialize data so the template can read it
         const posts = postData.map((post) => post.get({ plain: true }));
@@ -31,7 +43,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // get edit post page
-router.get('/edit/:id', auth, async (req, res) => { 
+router.get('/edit/:id', auth, async (req, res) => {
     try {
         const postData = await Post.findByPk(req.params.id, {
             include: [
@@ -39,7 +51,18 @@ router.get('/edit/:id', auth, async (req, res) => {
                     model: User,
                     attributes: ['username'],
                 },
+                {
+                    model: Comment,
+                    attributes: ['id', 'content', 'post_id', 'user_id', 'createdAt'],
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['username'],
+                        },
+                    ],
+                },
             ],
+
         });
         const post = postData.get({ plain: true });
         res.render('edit-post', {

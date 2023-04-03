@@ -8,10 +8,24 @@ const withAuth = require('../../utils/auth');
 
 
 
+
+
 //update a comment
-router.put('/:id', withAuth, async (req, res) => {
+router.put('/edit/:id', withAuth, async (req, res) => {
     try {
-        const commentData = await Comment.update(
+        const commentData = await Comment.findByPk(req.params.id);
+        
+        if (!commentData) {
+            res.status(404).json({ message: 'No comment found with this id!' });
+            return;
+        }
+
+        if(commentData.user_id !== req.session.user_id) {
+            res.status(403).json({ message: 'You do not have permission to edit this comment!' });
+            return;
+        }
+
+        await Comment.update(
             {
                 content: req.body.content,
             },
@@ -21,22 +35,15 @@ router.put('/:id', withAuth, async (req, res) => {
                 },
             }
         );
-        if (!commentData) {
-            res.status(404).json({ message: 'No comment found with this id!' });
-            return;
-        }
-        if(commentData.user_id !== req.session.user_id) {
-            res.status(403).json({ message: 'You do not have permission to edit this comment!' });
-            return;
-        }
-        res.status(200).json(commentData);
+
+        res.status(200).json({ message: 'Comment updated successfully!' });
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 //delete a comment
-router.delete('/:id', withAuth, async (req, res) => {
+router.delete('/delete/:id', withAuth, async (req, res) => {
     try {
         const commentData = await Comment.findByPk(req.params.id);
         if (!commentData) {
@@ -100,11 +107,41 @@ router.post('/:id', withAuth, async (req, res) => {
         post_id: req.body.post_id,
       });
       //render the single post page
+        
         res.redirect(`/post/${req.body.post_id}`);
+
     } catch (err) {
         res.status(400).json(err);
         }
     });
 
-  
-    module.exports = router;
+    
+    
+
+    // Get edit comment page for only the user who created the comment
+    router.get('/edit/:id', withAuth, async (req, res) => {
+      try {
+        const commentData = await Comment.findByPk(req.params.id);
+        if (!commentData) {
+          res.status(404).json({ message: 'No comment found with this id!' });
+          return;
+        }
+        if (commentData.user_id !== req.session.user_id) {
+          res.status(403).json({ message: 'You do not have permission to edit this comment!' });
+          return;
+        }
+        const comment = commentData.get({ plain: true });
+    
+        // Render the 'edit-comment' or 'editcomment' template, depending on the template file name
+        res.render('edit-comment', {
+            
+          comment,
+          loggedIn: req.session.loggedIn,
+        });
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    });
+
+module.exports = router;
+
