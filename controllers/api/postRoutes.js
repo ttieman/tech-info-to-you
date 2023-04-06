@@ -9,7 +9,7 @@ router.post('/', withAuth, async (req, res) => {  //http://localhost:3001/api/po
             ...req.body,
             user_id: req.session.user_id,
         });
-        res.status(200).json(newPost);
+
         res.redirect('/');
     } catch (err) {
         res.status(400).json(err);

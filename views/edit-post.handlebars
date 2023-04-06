@@ -1,18 +1,64 @@
-<!-- edit-post.handlebars -->
-{{#if loggedIn}}
-  <h2>Edit your post:</h2>
-  <form id="edit-post-form">
-    <div>
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" value="{{post.title}}" required />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Post</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Tech Info To You</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/posts/newpost">Post</a>
+        </li>
+        <li class="nav-item">
+          <form action="http://localhost:3001/api/users/logout" method="POST">
+            <button type="submit" class="nav-link btn btn-link">Logout</button>
+          </form>
+        </li>
+      </ul>
     </div>
-    <div>
-      <label for="content">Content:</label>
-      <textarea id="content" name="content" rows="10" required>{{post.content}}</textarea>
-    </div>
-    <button type="submit">Update</button>
-  </form>
-  <script src="/js/edit-post.js"></script>
-{{else}}
-  <h2>You need to log in to edit your post.</h2>
-{{/if}}
+  </nav>
+  <!-- End of Navigation bar -->
+
+  <div class="container">
+    {{#if loggedIn}}
+    <h2>Edit your post:</h2>
+    <form id="edit-post-form" class="mt-4">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" class="form-control" value="{{post.title}}" required />
+      </div>
+      <div class="form-group">
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" class="form-control" rows="10" required>{{post.content}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+    <script src="/js/edit-post.js"></script>
+    {{else}}
+    <h2>You need to log in to edit your post.</h2>
+    {{/if}}
+  </div>
+
+</body>
+
+</html>

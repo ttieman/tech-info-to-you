@@ -14,7 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 //sets up handlebars.js engine with custom helpers
-const hbs = exphbs.create({ helpers });
+const hbs = exphbs.create({
+    helpers: {
+        not: function (value) {
+            return !value;
+        },
+    },
+});
 
 const sess = {
     secret: process.env.SESSION_SECRET,
@@ -26,7 +32,7 @@ const sess = {
     saveUninitialized: true,
     store: new SequelizeStore({
         db: sequelize,
-        
+
     }),
 };
 

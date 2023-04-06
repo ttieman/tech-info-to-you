@@ -1,10 +1,41 @@
-<form action="/api/comment/{{post.id}}" method="POST">
-  <input type="hidden" name="post_id" value="{{post.id}}">
-  <div>
-    <label for="content">Add a comment:</label>
-    <textarea name="content" id="content" rows="4" cols="50"></textarea>
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Tech Info To You</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api/posts/newpost">Post</a>
+      </li>
+      <li class="nav-item">
+        <form action="http://localhost:3001/api/users/logout" method="POST">
+          <button type="submit" class="nav-link btn btn-link">Logout</button>
+        </form>
+      </li>
+    </ul>
   </div>
-  <div>
-    <button type="submit">Submit Comment</button>
-  </div>
-</form>
+</nav>
+<!-- End of Navigation bar -->
+
+<div class="container">
+  <h2 class="text-center mt-4">Add a Comment</h2>
+  <form action="/api/comment/{{post.id}}" method="POST" class="mt-4">
+    <input type="hidden" name="post_id" value="{{post.id}}">
+    <div class="form-group">
+      <label for="content">Add a comment:</label>
+      <textarea name="content" id="content" rows="4" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </div>
+  </form>
+</div>

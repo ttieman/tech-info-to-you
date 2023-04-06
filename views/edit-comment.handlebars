@@ -1,15 +1,46 @@
-{{#if loggedIn}}
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Tech Info To You</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api/posts/newpost">Post</a>
+      </li>
+      <li class="nav-item">
+        <form action="http://localhost:3001/api/users/logout" method="POST">
+          <button type="submit" class="nav-link btn btn-link">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- End of Navigation bar -->
+
+<div class="container">
+  {{#if loggedIn}}
   <h2>Edit your comment:</h2>
-  <form id="edit-comment-form">
-  {{!-- I need the comments title to be displayed not inputed --}}
-  
-    <div>
+  <form id="edit-comment-form" class="mt-4">
+    {{!-- I need the comments title to be displayed not inputed --}}
+
+    <div class="form-group">
       <label for="content">Content:</label>
-      <textarea id="content" name="content" rows="10" required>{{comment.content}}</textarea>
+      <textarea id="content" name="content" class="form-control" rows="10" required>{{comment.content}}</textarea>
     </div>
-    <button type="submit" id="user-id" value="{{User.id}}">Update</button>
+    <button type="submit" id="user-id" class="btn btn-primary" value="{{User.id}}">Update</button>
   </form>
-{{else}}
+  {{else}}
   <h2>You need to log in to edit your post.</h2>
-{{/if}}
-  <script src="/js/edit-comment.js"></script>
+  {{/if}}
+</div>
+
+<script src="/js/edit-comment.js"></script>

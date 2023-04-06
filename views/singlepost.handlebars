@@ -1,41 +1,68 @@
-<section id="blogpost">
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Tech Info To You</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api/posts/newpost">Post</a>
+      </li>
+      <li class="nav-item">
+        <form action="http://localhost:3001/api/users/logout" method="POST">
+          <button type="submit" class="nav-link btn btn-link">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!-- End of Navigation bar -->
 
-  <div class="postItem col-md-12">
-    <a href='/post/{{id}}'>
+<div class="container">
+  <section id="blogpost">
+    <div class="postItem col-md-12 mt-4">
       <div class="card">
         <div class="card-body">
           <h1>{{title}}</h1>
-          <h6 class="card-subtitle text-muted">Author: {{User.username}}</h6>
+          <h6 class="card-subtitle text-muted">Author: {{this.User.username}}</h6>
           <p class="card-text">{{content}}</p>
-          <a href="/api/comment/{{id}}"><button>Comment</button></a>
+          <a href="/api/comment/{{id}}" class="btn btn-primary">Comment</a>
           <p class="timestamp">{{created_at}}</p>
         </div>
       </div>
-    </a>
-    <section id="comments">
-      <h2>Comments:</h2>
-      <ul>
-        <div class="comments-container" data-current-user-id="{{this.User.id}}">
-          {{#each Comments}}
-          <div class="comment" data-comment-id="{{this.id}}" data-user-id="{{this.User.id}}">
-            <li>
-              <p class="{{content}}">{{content}}</p>
-              <p>Author: {{this.User.username}}</p>
-              <p>Posted on: {{created_at}}</p>
-            </li>
-            <a href='/api/comment/edit/{{id}}'><button class="edit_comment hidden" data-id="{{this.id}}">Update</button></a>
-            <button type="submit" class="delete_comment hidden" id="delete-comment-button" data-id="{{this.id}}">Delete</button>
-           
+      <section id="comments">
+        <h2>Comments:</h2>
+        <ul>
+          <div class="comments-container" data-current-user-id="{{this.User.id}}">
+            {{#each Comments}}
+            <div class="comment" data-comment-id="{{this.id}}" data-user-id="{{this.User.id}}">
+              <li class="list-group-item">
+                <p class="{{content}}">{{content}}</p>
+                <p>Author: {{this.User.username}}</p>
+                <p>Posted on: {{this.created_at}}</p>
+              </li>
+              <a href='/api/comment/edit/{{id}}'><button class="edit_comment hidden btn btn-primary"
+                  data-id="{{this.id}}">Update</button></a>
+              <button type="submit" class="delete_comment hidden btn btn-danger" id="delete-comment-button"
+                data-id="{{this.id}}">Delete</button>
+            </div>
+            {{/each}}
           </div>
-          {{/each}}
-        </div>
-      </ul>
+        </ul>
 
-      {{#if logged_in}}
-      <!-- Add comment form or any other authenticated user functionality -->
-      {{/if}}
-    </section>
-  </div>
-
-</section>
+        {{#if logged_in}}
+        <!-- Add comment form or any other authenticated user functionality -->
+        {{/if}}
+      </section>
+    </div>
+  </section>
+</div>
 <script src="/js/comment.js"></script>
