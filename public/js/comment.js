@@ -24,31 +24,40 @@ async function commentFormHandler(event) {
   }
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const deleteButtons = document.getElementsByClassName('delete_comment');
 
-document.getElementById('delete-comment-button').addEventListener('click', async (event) => {
-  event.preventDefault();
+  if (deleteButtons) {
+    // Attach event listeners to all delete buttons
+    Array.from(deleteButtons).forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.preventDefault();
 
-  // Retrieve the comment ID from the data-id attribute
-  const commentId = event.target.getAttribute('data-id');
+        // Retrieve the comment ID from the data-id attribute
+        const commentId = event.target.getAttribute('data-id');
 
-  // Send a DELETE request to the route
-  try {
-    const response = await fetch(`/api/comment/delete/${commentId}`, {
-      method: 'DELETE',
+        // Send a DELETE request to the route
+        try {
+          const response = await fetch(`/api/comment/delete/${commentId}`, {
+            method: 'DELETE',
+          });
+
+          if (response.ok) {
+            // Remove the comment element from the DOM
+            const commentElement = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
+            commentElement.remove();
+
+            console.log('Comment deleted!');
+          } else {
+            console.error('Failed to delete the comment.');
+          }
+        } catch (err) {
+          console.error('Error:', err);
+        }
+      });
     });
-
-    if (response.ok) {
-      // Remove the comment element from the DOM
-      const commentElement = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
-      commentElement.remove();
-
-      console.log('Comment deleted!');
-    } else {
-      console.error('Failed to delete the comment.');
-    }
-  } catch (err) {
-    console.error('Error:', err);
   }
 });
+
 
 

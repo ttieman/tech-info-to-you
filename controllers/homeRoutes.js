@@ -2,19 +2,15 @@ const { Post, User, Comment } = require('../models');
 const router = require('express').Router();
 const withAuth = require('../utils/auth');
 
-router.get('/', withAuth, async (req, res) => { //http://localhost:3001/
+router.get('/', withAuth, async (req, res) => {
   try {
-    //get all posts and JOIN with user data
+    // Get all posts and JOIN with user data
     const postData = await Post.findAll({
       attributes: ['id', 'title', 'content', 'createdAt'],
-      where: {
-        user_id: req.session.user_id
-      },
       include: [
         {
           model: User,
-          attributes: ['username'],
-          exclude: ['password'],
+          attributes: ['id', 'username'],
         },
         {
           model: Comment,
@@ -27,13 +23,12 @@ router.get('/', withAuth, async (req, res) => { //http://localhost:3001/
       ],
     });
 
-
-    //serialize data so template can read it
-    // need to map over it because this is an array of objects
+    // Serialize data so template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
     const user_id = req.session.user_id;
     const logged_in = req.session.loggedIn;
-
+    console.log("user_id from session:", req.session.user_id);
+    console.log("logged_in from session:", req.session.loggedIn);
     res.render('home', {
       posts,
       logged_in,
@@ -44,7 +39,6 @@ router.get('/', withAuth, async (req, res) => { //http://localhost:3001/
   }
 });
 
-//get single post by id 
 router.get('/post/:id', withAuth, async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
@@ -68,6 +62,12 @@ router.get('/post/:id', withAuth, async (req, res) => {
 
     const post = postData.get({ plain: true });
     const created_at = post.createdAt;
+
+    // Add a new property 'isAuthor' to each comment object
+    post.Comments = post.Comments.map(comment => {
+      comment.isAuthor = comment.user_id === req.session.user_id;
+      return comment;
+    });
 
     res.render('singlepost', {
       ...post,

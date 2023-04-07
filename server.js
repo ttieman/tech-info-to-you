@@ -4,6 +4,7 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
+const Handlebars = require('handlebars');
 
 const helpers = require('./utils/auth');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -19,8 +20,13 @@ const hbs = exphbs.create({
         not: function (value) {
             return !value;
         },
+
+
     },
 });
+
+
+
 
 const sess = {
     secret: process.env.SESSION_SECRET,

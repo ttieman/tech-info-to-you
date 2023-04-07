@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User} = require('../../models');
+const { User } = require('../../models');
 const bcrypt = require('bcrypt');
 const withAuth = require('../../utils/auth');
 
@@ -36,14 +36,14 @@ router.post('/login', async (req, res) => {
         console.log('User data:', userData); // Log the retrieved user data
 
         if (!userData) {
-            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            res.render('login', { message: 'Incorrect username or password, please try again' });
             return;
         }
         const validPassword = await userData.validPassword(req.body.password);
         console.log('Password validation:', validPassword); // Log the password validation result
 
         if (!validPassword) {
-            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            res.render('login', { message: 'Incorrect username or password, please try again' });
             return;
         }
         req.session.save(() => {
@@ -67,7 +67,7 @@ router.post('/logout', (req, res) => {
 
             // Redirect to the login page
             res.redirect('/login');
-            
+
         });
     } else {
         res.status(404).end();
