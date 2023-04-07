@@ -30,7 +30,7 @@ const hbs = exphbs.create({
 
 
 const sess = {
-    secret: process.env.SESSION_SECRET || process.env.JawsDB_URL,
+    secret: process.env.SESSION_SECRET,
     cookie: {
         // Session will expire in 30 minutes
         expires: 30 * 60 * 1000,
