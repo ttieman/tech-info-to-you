@@ -64,7 +64,7 @@ To the Application:
 [https://serene-brushlands-66474.herokuapp.com](https://serene-brushlands-66474.herokuapp.com)  
 
 To the Repo:
-[https://github.com/ttieman/Team-Roster-Manager-](https://github.com/ttieman/Team-Roster-Manager-)  
+[https://github.com/ttieman/tech-info-to-you](https://github.com/ttieman/tech-info-to-you)  
   
   
 ## Tests 
