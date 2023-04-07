@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 // Create our Comment model
-class Comment extends Model {}
+class Comment extends Model { }
 // Define table columns and configuration
 Comment.init(
     {
@@ -27,7 +27,7 @@ Comment.init(
             allowNull: false,
             references: {
                 // This references the `user` model, which we set in `User.js` as its `modelName` property
-                model: 'user',
+                model: 'User',
                 key: 'id',
             },
         },
@@ -37,7 +37,7 @@ Comment.init(
             allowNull: false,
             references: {
                 // This references the `post` model, which we set in `Post.js` as its `modelName` property
-                model: 'post',
+                model: 'Post',
                 key: 'id',
             },
         },
@@ -45,8 +45,8 @@ Comment.init(
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
-            
-    },
+
+        },
     },
     {
         // TABLE CONFIGURATION OPTIONS GO HERE 
